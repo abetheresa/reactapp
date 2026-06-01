@@ -1,14 +1,14 @@
 import { useState,useReducer } from 'react'
 import './App.css'
 
-const initialState = {name:"",loggedIn:true};
+const initialState = {name:"",loggedIn:false};
 
 function reducer(state,action) {
   switch(action.type){
     case "login" :
       return {...state,loggedIn:true,name:action.payload};
     case "logout" :
-      return {...state,loggedIn:false,name:action.payload};
+      return {...state,loggedIn:false,name:""};
     default :
     return state;
   }
@@ -16,7 +16,8 @@ function reducer(state,action) {
 
 function App() {
   // using useState
-  const [count,setCount] = useState(0)
+  const [count,setCount] = useState(0);
+  const [input,setInput] = useState("");
   const [state, dispatch] = useReducer(reducer,initialState);
 
   return(
@@ -26,7 +27,13 @@ function App() {
         <button onClick={() => dispatch({type:"logout"})}>Logout</button>
         </div>) : (<div>
           <p>You are not logged in</p>
-          <button onClick={() => dispatch({type:"login",payload:"Alice"})}>Login</button>
+          <input 
+          type="text" 
+          placeholder="Enter your name" 
+          value={input} 
+          onChange={(e) => setInput(e.target.value)}>
+          </input>
+          <button onClick={() => dispatch({type:"login",payload:input})}>Login</button>
         </div>)}
       <h2>{count}</h2>
       <button onClick={() => setCount(count+1)}>+ add</button>
